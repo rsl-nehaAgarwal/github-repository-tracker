@@ -32,8 +32,12 @@ async function fetchOwner(username) {
 
 async function refreshData() {
   try {
-    const repositories = await fetchRepositories(username);
-    const owner = await fetchOwner(username);
+    const results = await Promise.all([
+  fetchRepositories(username),
+  fetchOwner(username)
+]);
+const repositories = results[0];
+const owner = results[1];
     console.log("Tracking GitHub repositories for: " + username);
     console.log("Owner: " + (owner.name || owner.login));
     console.log("Bio: " + (owner.bio || "No bio"));
